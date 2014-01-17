@@ -1,31 +1,48 @@
 var chai = require('chai')
+  , fs = require('fs')
   , clientAssociation = require('../../lib/exchange/clientAssociation');
 
 
 describe('exchange.clientAssociation', function() {
   
   it('should be named client_assoc', function() {
-    expect(clientAssociation(function(){}).name).to.equal('client_assoc');
+    expect(clientAssociation(function(){}, function(){}).name).to.equal('client_assoc');
   });
   
-  it('should throw if constructed without a issue callback', function() {
+  it('should throw if constructed without a keying callback', function() {
     expect(function() {
       clientAssociation();
+    }).to.throw(TypeError, 'clientAssociation exchange requires a keying callback');
+  });
+  
+  it('should throw if constructed without an issue callback', function() {
+    expect(function() {
+      clientAssociation(function(){});
     }).to.throw(TypeError, 'clientAssociation exchange requires an issue callback');
   });
   
   
-  describe('issuing an access token to new association', function() {
+  describe('issuing an access token for statement containing issuer and software id', function() {
     var response, err;
 
-    function issue(client, code, redirectURI, done) {
-      return done(new Error('something is wrong'));
+    function keying(issuer, done) {
+      expect(issuer).to.equal('http://www.example.com/');
+      
+      return fs.readFile(__dirname + '/../keys/rsa/cert.pem', 'utf8', done);
+    }
+
+    function issue(client, statement, done) {
+      return done(null, 'x');
     }
 
     before(function(done) {
-      chai.connect.use(clientAssociation(issue))
+      chai.connect.use(clientAssociation(keying, issue))
         .req(function(req) {
-          req.body = { code: 'abc123', redirect_uri: 'http://example.com/oa/callback' };
+          req.body = {};
+          req.body.grant_type = 'urn:ietf:params:oauth:grant-type:client-assoc';
+          // header = { alg: 'rs256' }
+          // body = { iss: 'http://www.example.com/', software_id: '1234' }
+          req.body.software_statement = 'eyJhbGciOiJyczI1NiJ9.eyJpc3MiOiJodHRwOi8vd3d3LmV4YW1wbGUuY29tLyIsInNvZnR3YXJlX2lkIjoiMTIzNCJ9.M-ZPqGU2J7XSkstGfyRc9Nbt9wamlohDQbIbfX5zVlGQjojPZWfFywPdjr64FQGzxC5bqwBXX8VyvKcXbuFlC-2AMJIu8nxpzV-_mJ6ewynGVQQ8NRCsa9pnqLBeXv22XQzF9XOn1uOAUfQsNafnQeuTkZraUyvhrJ9znNdWfwM';
         })
         .end(function(res) {
           response = res;
