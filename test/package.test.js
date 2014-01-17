@@ -1,11 +1,12 @@
 /* global describe, it, expect */
 
-var pkg = require('..');
+var clientAssoc = require('..');
 
 describe('oauth2orize-client-assoc', function() {
   
-  it('should export object', function() {
-    expect(pkg).to.be.an('object');
+  it('should export exchanges', function() {
+    expect(clientAssoc.exchange).to.be.an('object');
+    expect(clientAssoc.exchange.clientAssociation).to.be.a('function');
   });
   
 });
