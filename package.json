@@ -1,7 +1,7 @@
 {
   "name": "oauth2orize-client-assoc",
   "version": "0.0.0",
-  "description": "TODO",
+  "description": "Client association exchange for OAuth2orize.",
   "keywords": [
     "oauth2"
   ],
