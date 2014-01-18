@@ -25,7 +25,8 @@
   ],
   "main": "./lib",
   "dependencies": {
-    "jws": "0.2.x"
+    "jws": "0.2.x",
+    "utils-merge": "1.x.x"
   },
   "devDependencies": {
     "mocha": "1.x.x",

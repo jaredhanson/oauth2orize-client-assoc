@@ -32,7 +32,7 @@ describe('exchange.clientAssociation', function() {
     }
 
     function issue(client, statement, done) {
-      return done(null, 'x');
+      return done(null, 'C123', 'shh-its-secret');
     }
 
     before(function(done) {
@@ -58,7 +58,7 @@ describe('exchange.clientAssociation', function() {
     });
     
     it('should respond with body', function() {
-      expect(response.body).to.equal('{"access_token":"s3cr1t","token_type":"Bearer"}');
+      expect(response.body).to.equal('{"client_id":"C123","client_token":"shh-its-secret","token_type":"Basic"}');
     });
   });
   
