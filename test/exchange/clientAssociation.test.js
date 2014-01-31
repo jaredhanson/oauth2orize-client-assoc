@@ -22,7 +22,7 @@ describe('exchange.clientAssociation', function() {
   });
   
   
-  describe('issuing an access token for statement containing issuer and software id', function() {
+  describe('issuing an access token for statement containing issuer and software id with type in JWT header', function() {
     var response, err;
 
     function keying(issuer, done) {
@@ -32,6 +32,10 @@ describe('exchange.clientAssociation', function() {
     }
 
     function issue(client, statement, done) {
+      expect(client).to.be.undefined;
+      expect(statement.iss).to.equal('http://www.example.com/');
+      expect(statement.software_id).to.equal('1234');
+      
       return done(null, 'C123', 'shh-its-secret');
     }
 
