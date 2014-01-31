@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var jws = require('jws')
   , fs = require('fs');
 
