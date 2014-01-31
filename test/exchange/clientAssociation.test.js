@@ -22,7 +22,7 @@ describe('exchange.clientAssociation', function() {
   });
   
   
-  describe('issuing an access token for statement containing issuer and software id with type in JWT header', function() {
+  describe('issuing an access token for statement containing issuer and software id without type in JWT header', function() {
     var response, err;
 
     function keying(issuer, done) {
